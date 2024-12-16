@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { WebsiteData } from "@/app/api/parse/route";
 import { LayoutTheme } from "@/types/layout";
@@ -54,6 +54,14 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
     footer: {},
   };
 
+  const sidebarNavigation =
+    layout.sidebar?.navigation?.flatMap((nav) =>
+      nav.menuLinks?.map((link) => ({
+        text: link.text,
+        href: link.href,
+      }))
+    ) || [];
+
   const renderLayoutSwitcher = () => (
     <div className="mb-4 flex items-center justify-between space-x-2 bg-[#808080] p-2">
       <ThemeSwitcher currentTheme={currentTheme} onThemeChange={setCurrentTheme} />
@@ -90,7 +98,7 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
     <div className="mx-auto max-w-6xl space-y-4 px-4">
       <Header90s {...layout.header} theme={currentTheme} />
       <div className="flex gap-4">
-        <Sidebar90s {...layout.sidebar} theme={currentTheme} />
+        <Sidebar90s {...layout.sidebar} navigation={sidebarNavigation} theme={currentTheme} />
         <Main90s {...layout.main} theme={currentTheme} />
       </div>
       <Footer90s {...layout.footer} theme={currentTheme} />
@@ -103,7 +111,7 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
         <Header90s {...layout.header} theme={currentTheme} />
       </div>
       <div className="col-span-1 row-span-1 overflow-auto bg-[#c0c0c0] p-2">
-        <Sidebar90s {...layout.sidebar} theme={currentTheme} />
+        <Sidebar90s {...layout.sidebar} navigation={sidebarNavigation} theme={currentTheme} />
       </div>
       <div className="col-span-5 row-span-1 overflow-auto bg-white p-4">
         <Main90s {...layout.main} theme={currentTheme} />
@@ -138,6 +146,11 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
       </tbody>
     </table>
   );
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowHitCounter(true), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className={`min-h-screen ${themeStyles[currentTheme].bg} p-4`}>

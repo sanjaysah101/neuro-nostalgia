@@ -1,4 +1,8 @@
+import Image from "next/image";
+
 import { LayoutTheme } from "@/types/layout";
+
+import { Article, Image as ImageType, Table, Video } from "./types";
 
 interface MainProps {
   headings?: {
@@ -7,27 +11,10 @@ interface MainProps {
     h3: string[];
   };
   content?: {
-    articles?: Array<{
-      text: string;
-      date?: string;
-      author?: string;
-      category?: string;
-      hasComments?: boolean;
-      readingTime?: string;
-    }>;
-    images?: Array<{
-      src: string;
-      alt: string;
-      dimensions?: {
-        width: string;
-        height: string;
-      };
-      isDecorative?: boolean;
-      inArticle?: boolean;
-      isThumbnail?: boolean;
-    }>;
-    videos?: string[];
-    tables?: any[];
+    articles?: Article[];
+    images?: ImageType[];
+    videos?: Video[];
+    tables?: Table[];
   };
   theme?: LayoutTheme;
 }
@@ -61,19 +48,19 @@ const themeStyles: { [key in LayoutTheme]: { main: string; article: string; head
 
 export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content = {}, theme = "default" }: MainProps) {
   const styles = themeStyles[theme];
-  const { articles = [], images = [], videos = [], tables = [] } = content;
+  const { images = [] } = content;
 
   return (
     <main className={styles.main}>
       {/* Logo/Header Image Section */}
-      {images.length > 0 && images[0].src && (
+      {images && images.length > 0 && images[0].src && (
         <div className={`${styles.image} mb-6 text-center`}>
-          <img
+          <Image
             src={images[0].src}
             alt={images[0].alt || "Site Logo"}
             className="mx-auto"
-            width={images[0].dimensions?.width || "500"}
-            height={images[0].dimensions?.height || "200"}
+            width={parseInt(images[0].dimensions?.width || "500", 10)}
+            height={parseInt(images[0].dimensions?.height || "200", 10)}
           />
         </div>
       )}
@@ -81,15 +68,17 @@ export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content
       {/* Headings Section */}
       {headings.h1.map((h1, index) => (
         <div key={index} className="mb-6">
-          <h1 className={`${styles.heading} text-xl`}>
-            <blink>{h1}</blink>
-          </h1>
+          <h1 className={`${styles.heading} animate-blink text-xl`}>{h1}</h1>
           {index === 0 && (
             <div className={`${styles.article} mt-2`}>
               <p className="text-center">
                 🚀 Welcome to our retro-styled website! 🚀
                 <br />
-                <marquee className="my-2">{h1} | Best viewed in Netscape Navigator 4.0 | Resolution: 800x600</marquee>
+                <div className="my-2 overflow-hidden whitespace-nowrap">
+                  <div className="animate-marquee">
+                    {h1} | Best viewed in Netscape Navigator 4.0 | Resolution: 800x600
+                  </div>
+                </div>
               </p>
             </div>
           )}
@@ -99,12 +88,12 @@ export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content
       {/* Additional Images */}
       {images.slice(1).map((image, index) => (
         <div key={index} className={`${styles.image} text-center`}>
-          <img
+          <Image
             src={image.src}
             alt={image.alt || `Image ${index + 2}`}
             className="mx-auto"
-            width={image.dimensions?.width || "auto"}
-            height={image.dimensions?.height || "auto"}
+            width={parseInt(image.dimensions?.width || "500", 10)}
+            height={parseInt(image.dimensions?.height || "300", 10)}
           />
           {image.alt && <div className="mt-1 text-sm text-gray-600">{image.alt}</div>}
         </div>
@@ -116,7 +105,7 @@ export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content
           <div className="mb-4 text-6xl">🚧</div>
           <div className="text-xl">Under Construction</div>
           <div className="mt-2 text-sm">Please check back later!</div>
-          <img
+          <Image
             src="/images/under-construction.gif"
             alt="Under Construction"
             className="mx-auto mt-4"

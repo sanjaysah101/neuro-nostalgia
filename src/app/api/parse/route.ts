@@ -70,7 +70,7 @@ export type WebsiteData = {
         }>;
         tables: Array<{
           headers: string[];
-          rows: number;
+          rows: string[][];
           hasBorder: boolean;
         }>;
       };
@@ -278,7 +278,9 @@ export async function POST(request: Request): Promise<NextResponse> {
                   .find("th")
                   .map((_, th) => $(th).text().trim())
                   .get(),
-                rows: $(el).find("tr").length,
+                rows: Array.from($(el).find("tr:has(td)")).map(tr => 
+                  Array.from($(tr).find("td")).map(td => $(td).text().trim())
+                ),
                 hasBorder: $(el).attr("border") !== undefined,
               }))
               .get(),

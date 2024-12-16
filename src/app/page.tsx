@@ -67,9 +67,9 @@ export default function Home() {
                 className="mx-auto"
                 priority
               />
-              <marquee className="mt-2 bg-black p-2 text-yellow-300">
-                🚀 Transform ANY modern website into authentic 90s style! 🚀
-              </marquee>
+              <div className="mt-2 overflow-hidden whitespace-nowrap bg-black p-2 text-yellow-300">
+                <div className="animate-marquee">🚀 Transform ANY modern website into authentic 90s style! 🚀</div>
+              </div>
             </div>
 
             {/* Browser Compatibility Notice */}
