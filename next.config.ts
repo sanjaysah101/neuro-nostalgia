@@ -1,6 +1,14 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
+  compress: true,
+  reactStrictMode: true,
+  experimental: {
+    optimizeCss: true,
+    cssChunking: true,
+    inlineCss: true,
+  },
+  poweredByHeader: false,
   images: {
     remotePatterns: [
       {
