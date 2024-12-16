@@ -10,7 +10,7 @@ interface RetroWindowProps {
 
 export function RetroWindow({ title, children, className = "", icon, isLoading = false }: RetroWindowProps) {
   return (
-    <div className={`border-2 border-[#808080] bg-[#c0c0c0] shadow-win95 ${className}`}>
+    <div className={`shadow-win95 border-2 border-[#808080] bg-[#c0c0c0] ${className}`}>
       {title && (
         <div className="flex items-center justify-between bg-[#000080] p-1">
           <div className="flex items-center gap-2">
@@ -18,13 +18,13 @@ export function RetroWindow({ title, children, className = "", icon, isLoading =
             <h2 className="text-sm font-bold text-yellow-300">{title}</h2>
           </div>
           <div className="flex gap-1">
-            <button className="h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs shadow-win95 active:shadow-win95-inset">
+            <button className="shadow-win95 active:shadow-win95-inset h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs">
               _
             </button>
-            <button className="h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs shadow-win95 active:shadow-win95-inset">
+            <button className="shadow-win95 active:shadow-win95-inset h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs">
               □
             </button>
-            <button className="h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs shadow-win95 active:shadow-win95-inset">
+            <button className="shadow-win95 active:shadow-win95-inset h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs">
               ×
             </button>
           </div>

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export function BackToTop() {
@@ -27,9 +26,13 @@ export function BackToTop() {
   if (!isVisible) return null;
 
   return (
-    <button onClick={scrollToTop} className="win95-button fixed bottom-4 right-4" aria-label="Back to top">
-      <Image src="/images/up-arrow.gif" alt="Back to top" width={20} height={20} className="mr-2 inline" />
-      Back to Top
+    <button
+      onClick={scrollToTop}
+      className="fixed bottom-4 right-4 flex items-center border-[3px] bg-[#c0c0c0] px-4 py-2 shadow-[inset_-1px_-1px_0_0_#0a0a0a,inset_1px_1px_0_0_#fff,inset_-2px_-2px_0_0_#808080,inset_2px_2px_0_0_#dfdfdf] hover:cursor-pointer active:shadow-[inset_-1px_-1px_0_0_#fff,inset_1px_1px_0_0_#0a0a0a,inset_-2px_-2px_0_0_#dfdfdf,inset_2px_2px_0_0_#808080]"
+      aria-label="Back to top"
+    >
+      <span className="mr-2 text-black">▲</span>
+      <span className="font-[system-ui] text-black">Back to Top</span>
     </button>
   );
 }
