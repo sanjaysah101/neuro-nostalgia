@@ -3,8 +3,6 @@ import { ThemeSwitcherProps } from "@/types/layout";
 const themes = [
   { id: "default", name: "Windows 95" },
   { id: "cyber", name: "Cyberpunk" },
-  { id: "vaporwave", name: "Vaporwave" },
-  { id: "grunge", name: "Grunge" },
 ] as const;
 
 export default function ThemeSwitcher({ currentTheme, onThemeChange }: ThemeSwitcherProps) {

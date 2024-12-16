@@ -205,3 +205,89 @@ input[type="text"]::placeholder,
 input[type="search"]::placeholder {
   color: #666;
 }
+
+/* Windows 95 Shadows */
+.shadow-win95 {
+  box-shadow:
+    inset -1px -1px #0a0a0a,
+    inset 1px 1px #ffffff,
+    inset -2px -2px #808080,
+    inset 2px 2px #dfdfdf;
+}
+
+.shadow-win95-inset {
+  box-shadow:
+    inset -1px -1px #ffffff,
+    inset 1px 1px #0a0a0a,
+    inset -2px -2px #dfdfdf,
+    inset 2px 2px #808080;
+}
+
+/* Retro Scrollbar */
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #c0c0c0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #808080;
+  border: 2px solid #c0c0c0;
+}
+
+::-webkit-scrollbar-button {
+  background: #c0c0c0;
+  border: 2px solid #808080;
+  height: 16px;
+  width: 16px;
+}
+
+/* Blinking Text Animation */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Input Styles */
+.win95-input {
+  @apply shadow-win95-inset border-2 border-[#808080] bg-white px-2 py-1;
+}
+
+/* Marquee Speed Control */
+marquee {
+  scrollamount: 3;
+}
+
+/* Under Construction Animation */
+@keyframes construction {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.construction-animation {
+  animation: construction 2s ease-in-out infinite;
+}

@@ -17,6 +17,8 @@ export default function Home() {
   const [showPreview, setShowPreview] = useState(false);
   const [visitorCount, setVisitorCount] = useState(1000); // Start with a default value
 
+  console.log({ transformedHtml });
+
   useEffect(() => {
     // Generate random visitor count after component mounts
     setVisitorCount(Math.floor(Math.random() * 10000) + 1000);
@@ -42,7 +44,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#000080] text-white">
-      <div className="m-auto max-w-4xl p-4">
+      <div className="container m-auto p-4">
         {/* Hit Counter and Last Updated */}
         <div className="mb-4 flex justify-between bg-[#c0c0c0] p-2 text-black">
           <div>
