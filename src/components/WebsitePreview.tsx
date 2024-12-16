@@ -187,12 +187,22 @@ const WebsitePreview = ({
           <table className="w-full border-2 border-[#808080] bg-gray-200">
             <tbody>
               <tr className="border-b border-[#808080]">
-                <td className="border-r border-[#808080] p-2 font-bold">Original Size:</td>
-                <td className="p-2">12KB</td>
+                <td className="border-r border-[#808080] p-2 font-bold">Elements Found:</td>
+                <td className="p-2">
+                  {parsedData?.layout?.main?.content?.articles?.length +
+                    (parsedData?.layout?.main?.content?.images?.length || 0) +
+                    (parsedData?.layout?.main?.content?.tables?.length || 0) || 0}
+                </td>
               </tr>
               <tr className="border-b border-[#808080]">
-                <td className="border-r border-[#808080] p-2 font-bold">90s Version Size:</td>
-                <td className="p-2">4KB</td>
+                <td className="border-r border-[#808080] p-2 font-bold">Layout Style:</td>
+                <td className="p-2">
+                  {parsedData?.style?.layout?.hasTables
+                    ? "Table-based"
+                    : parsedData?.style?.layout?.hasFrames
+                      ? "Frames"
+                      : "Classic"}
+                </td>
               </tr>
               <tr className="border-b border-[#808080]">
                 <td className="border-r border-[#808080] p-2 font-bold">Images Found:</td>
@@ -207,8 +217,14 @@ const WebsitePreview = ({
 
           <div className="rounded border-2 border-[#808080] bg-black p-2 font-mono text-green-400">
             <div>Status: Transform Complete ✓</div>
-            <div>Optimization Level: Maximum</div>
-            <div>Web 1.0 Compatibility: 100%</div>
+            <div>
+              Style: {parsedData?.style?.hasGradients ? "Modern" : "Classic"} |{" "}
+              {parsedData?.style?.layout?.isResponsive ? "Responsive" : "Fixed Width"}
+            </div>
+            <div>
+              Compatibility: {parsedData?.style?.layout?.hasFrames ? "Netscape 2.0+" : "All Browsers"}{" "}
+              {parsedData?.style?.hasBorders ? "| Borders" : ""}
+            </div>
           </div>
         </div>
       </RetroWindow>

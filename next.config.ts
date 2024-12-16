@@ -4,9 +4,7 @@ const nextConfig: NextConfig = {
   compress: true,
   reactStrictMode: true,
   experimental: {
-    optimizeCss: true,
-    cssChunking: true,
-    inlineCss: true,
+    optimizeCss: false,
   },
   poweredByHeader: false,
   images: {

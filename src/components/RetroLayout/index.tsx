@@ -55,12 +55,12 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
   };
 
   const sidebarNavigation =
-    layout.sidebar?.navigation?.flatMap((nav) =>
-      nav.menuLinks?.map((link) => ({
+    layout.sidebar?.navigation
+      ?.flatMap((nav) => nav.menuLinks || [])
+      .map((link) => ({
         text: link.text,
         href: link.href,
-      }))
-    ) || [];
+      })) || [];
 
   const renderLayoutSwitcher = () => (
     <div className="mb-4 flex items-center justify-between space-x-2 bg-[#808080] p-2">
@@ -132,7 +132,7 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
         </tr>
         <tr>
           <td className="w-64 border-2 border-[#808080] bg-[#c0c0c0] p-2 align-top">
-            <Sidebar90s {...layout.sidebar} theme={currentTheme} />
+            <Sidebar90s {...layout.sidebar} navigation={sidebarNavigation} theme={currentTheme} />
           </td>
           <td className="border-2 border-[#808080] bg-white p-4">
             <Main90s {...layout.main} theme={currentTheme} />

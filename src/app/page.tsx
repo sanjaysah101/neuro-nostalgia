@@ -14,14 +14,8 @@ export default function Home() {
   const [url, setUrl] = useState("https://webdevnerds.com");
   const { transform, loading, error, transformedHtml } = useWebsiteTransform();
   const [showPreview, setShowPreview] = useState(false);
-  const [visitorCount, setVisitorCount] = useState(1000); // Start with a default value
 
   console.log({ transformedHtml });
-
-  useEffect(() => {
-    // Generate random visitor count after component mounts
-    setVisitorCount(Math.floor(Math.random() * 10000) + 1000);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,7 +37,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#000080] text-white">
-      <div className="m-auto max-w-4xl p-4">
+      <div className="container m-auto p-4">
         <div className="mb-4 flex justify-between border-2 border-[#808080] bg-[#c0c0c0] p-2 text-black">
           <div className="flex items-center">
             <span className="mr-2 font-bold">
@@ -72,7 +66,7 @@ export default function Home() {
                 <span className="animate-pulse text-pink-500">E</span>
               </h1>
               <div className="mt-2 overflow-hidden whitespace-nowrap bg-black p-2">
-                <div className="animate-marquee inline-block text-yellow-300">
+                <div className="inline-block animate-marquee text-yellow-300">
                   ⭐️ Transform ANY modern website into authentic 90s style! ⭐️ &nbsp;&nbsp;||&nbsp;&nbsp;
                   <span className="text-cyan-400">✨ Experience the magic of Web 1.0! ✨</span>
                 </div>
