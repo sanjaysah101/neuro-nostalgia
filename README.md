@@ -9,8 +9,6 @@ themes.
 
   - Default (Windows 95)
   - Cyber
-  - Vaporwave
-  - Grunge
 
 - 📐 Layout options:
 
