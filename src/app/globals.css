@@ -16,7 +16,7 @@
 body {
   background-color: var(--navy-bg);
   color: white;
-  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
 }
 
 /* Windows 95/98 style window */
@@ -45,10 +45,13 @@ body {
     inset -2px -2px var(--win95-border-dark),
     inset 2px 2px var(--win95-bg);
   color: black;
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+  font-size: 12px;
   font-weight: bold;
   padding: 4px 10px;
   min-width: 100px;
   text-align: center;
+  cursor: pointer;
 }
 
 .win95-button:active {
@@ -72,7 +75,7 @@ body {
   background: white;
   color: black;
   padding: 3px 5px;
-  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
   font-size: 14px;
 }
 
@@ -103,7 +106,7 @@ body {
 
 /* Starry background */
 .stars-bg {
-  background-image: url('/images/stars.gif');
+  background-image: url("/images/stars.gif");
   background-repeat: repeat;
 }
 
@@ -119,15 +122,19 @@ body {
   display: inline-block;
   background: #000;
   color: #0f0;
-  font-family: 'Digital-7', monospace;
+  font-family: "Digital-7", monospace;
   padding: 2px 4px;
   border: 1px solid #0f0;
   margin: 0 1px;
 }
 
 @keyframes marquee {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 .marquee-container {
@@ -138,4 +145,63 @@ body {
 .marquee-content {
   display: inline-block;
   animation: marquee 15s linear infinite;
+}
+
+/* Add to your existing CSS */
+.iframe-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+
+.iframe-container iframe {
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Windows 95 style scrollbars */
+.win95-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--win95-border-dark) var(--win95-bg);
+}
+
+.win95-scrollbar::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+.win95-scrollbar::-webkit-scrollbar-track {
+  background: var(--win95-bg);
+  border: 1px solid var(--win95-border-dark);
+}
+
+.win95-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--win95-border-dark);
+  border: 1px solid var(--win95-border-darker);
+}
+
+/* Update input styles */
+input[type="url"],
+input[type="text"],
+input[type="search"] {
+  background: white;
+  color: black;
+  border: 2px solid var(--win95-border-darker);
+  border-right-color: var(--win95-border-light);
+  border-bottom-color: var(--win95-border-light);
+  box-shadow:
+    inset 1px 1px var(--win95-border-darker),
+    inset -1px -1px var(--win95-border-light);
+  padding: 3px 5px;
+  font-family: "MS Sans Serif", "Microsoft Sans Serif", Arial, sans-serif;
+  font-size: 12px;
+  outline: none;
+}
+
+input[type="url"]::placeholder,
+input[type="text"]::placeholder,
+input[type="search"]::placeholder {
+  color: #666;
 }

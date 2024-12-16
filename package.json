@@ -12,13 +12,16 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
+    "axios": "^1.7.9",
     "cheerio": "^1.0.0",
+    "domhandler": "^5.0.3",
     "next": "15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -26,7 +29,8 @@
     "eslint-config-next": "15.1.0",
     "postcss": "^8",
     "prettier": "^3.4.2",
+    "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.7.2"
   }
 }
