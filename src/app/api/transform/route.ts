@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as cheerio from 'cheerio';
 import { NextResponse } from 'next/server';
 import { getResponseForGivenPrompt } from '../../../services/geminiAI';
@@ -9,6 +8,7 @@ async function fetchWebsite(url: string) {
     const response = await fetch(url);
     return await response.text();
   } catch (error) {
+    console.error('Failed to fetch website', error);
     throw new Error('Failed to fetch website');
   }
 }
