@@ -84,7 +84,7 @@ const WebsitePreview = ({
     <div className="mt-8 space-y-4">
       {/* Original Website Preview */}
       <RetroWindow title={`Original Website - ${url}`} className="bg-[#c0c0c0]">
-        <div className="h-[600px] overflow-auto bg-white">
+        <div className="h-[600px] overflow-hidden bg-white">
           {/* Browser Chrome */}
           <div className="sticky top-0 z-10 bg-[#c0c0c0]">
             <div className="flex items-center justify-between p-2">
@@ -110,7 +110,7 @@ const WebsitePreview = ({
           </div>
 
           {/* Website Content */}
-          <div className="relative min-h-[500px] border-2 border-[#808080] bg-white p-4">
+          <div className="relative h-[500px] border-2 border-[#808080] bg-white p-4">
             {iframeLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-[#c0c0c0]">
                 <LoadingAnimation />
@@ -142,6 +142,9 @@ const WebsitePreview = ({
         <div className="min-h-[600px] bg-[#c0c0c0] p-4">
           <RetroLayout
             data={{
+              title: parsedData?.title || "",
+              meta: parsedData?.meta || {},
+              style: parsedData?.style || {},
               layout: {
                 header: {
                   title: parsedData?.layout?.header?.title || "Transformed Website",
