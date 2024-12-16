@@ -3,19 +3,139 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Classic Windows 95/98 colors */
+  --win95-bg: #c0c0c0;
+  --win95-border-light: #ffffff;
+  --win95-border-dark: #808080;
+  --win95-border-darker: #404040;
+  --navy-bg: #000080;
+  --yellow-text: #ffff00;
+  --cyan-link: #00ffff;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--navy-bg);
+  color: white;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+}
+
+/* Windows 95/98 style window */
+.win95-window {
+  background: var(--win95-bg);
+  border: 2px solid var(--win95-border-darker);
+  border-right-color: var(--win95-border-dark);
+  border-bottom-color: var(--win95-border-dark);
+  box-shadow:
+    inset -1px -1px var(--win95-border-darker),
+    inset 1px 1px var(--win95-border-light),
+    inset -2px -2px var(--win95-border-dark),
+    inset 2px 2px var(--win95-bg);
+  padding: 2px;
+}
+
+/* Windows 95/98 style button */
+.win95-button {
+  background: var(--win95-bg);
+  border: 2px solid var(--win95-border-darker);
+  border-right-color: var(--win95-border-dark);
+  border-bottom-color: var(--win95-border-dark);
+  box-shadow:
+    inset -1px -1px var(--win95-border-darker),
+    inset 1px 1px var(--win95-border-light),
+    inset -2px -2px var(--win95-border-dark),
+    inset 2px 2px var(--win95-bg);
+  color: black;
+  font-weight: bold;
+  padding: 4px 10px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.win95-button:active {
+  border: 2px solid var(--win95-border-darker);
+  box-shadow:
+    inset 1px 1px var(--win95-border-darker),
+    inset -1px -1px var(--win95-border-light),
+    inset 2px 2px var(--win95-border-dark),
+    inset -2px -2px var(--win95-bg);
+  padding: 5px 9px 3px 11px;
+}
+
+/* Windows 95/98 style input */
+.win95-input {
+  border: 2px solid var(--win95-border-darker);
+  border-right-color: var(--win95-border-light);
+  border-bottom-color: var(--win95-border-light);
+  box-shadow:
+    inset 1px 1px var(--win95-border-darker),
+    inset -1px -1px var(--win95-border-light);
+  background: white;
+  color: black;
+  padding: 3px 5px;
+  font-family: 'MS Sans Serif', 'Microsoft Sans Serif', Arial, sans-serif;
+  font-size: 14px;
+}
+
+.win95-input::placeholder {
+  color: #666;
+}
+
+.win95-input:focus {
+  outline: none;
+  border-color: var(--win95-border-darker);
+}
+
+/* Blinking text animation */
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Starry background */
+.stars-bg {
+  background-image: url('/images/stars.gif');
+  background-repeat: repeat;
+}
+
+/* Marquee styles */
+.retro-marquee {
+  background: var(--navy-bg);
+  color: var(--yellow-text);
+  padding: 5px;
+  border: 2px solid var(--win95-border-light);
+}
+
+.counter-digit {
+  display: inline-block;
+  background: #000;
+  color: #0f0;
+  font-family: 'Digital-7', monospace;
+  padding: 2px 4px;
+  border: 1px solid #0f0;
+  margin: 0 1px;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.marquee-content {
+  display: inline-block;
+  animation: marquee 15s linear infinite;
 }
