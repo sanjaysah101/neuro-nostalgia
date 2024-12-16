@@ -15,7 +15,7 @@ interface Header90sProps {
   theme?: LayoutTheme;
 }
 
-const themeStyles = {
+const themeStyles: { [key in LayoutTheme]: { header: string; logo: string; nav: string; link: string } } = {
   default: {
     header: "bg-win95-navy text-win95-yellow text-center p-4 border-2 border-win95-border",
     logo: "border-2 border-white p-1 bg-win95-gray",
@@ -27,6 +27,18 @@ const themeStyles = {
     logo: "border border-green-500 p-1 bg-black",
     nav: "bg-black p-2 border border-green-500 mt-2",
     link: "text-green-400 font-mono mx-4 hover:text-green-200 hover:underline",
+  },
+  vaporwave: {
+    header: "bg-black/50 text-white text-center p-4 border border-white",
+    logo: "border border-white p-1 bg-black/50",
+    nav: "bg-black/50 p-2 border border-white mt-2",
+    link: "text-white font-mono mx-4 hover:text-pink-300 hover:underline",
+  },
+  grunge: {
+    header: "bg-stone-800 text-amber-100 text-center p-4 border border-amber-100",
+    logo: "border border-amber-100 p-1 bg-stone-800",
+    nav: "bg-stone-800 p-2 border border-amber-100 mt-2",
+    link: "text-amber-100 font-mono mx-4 hover:text-amber-200 hover:underline",
   },
 };
 

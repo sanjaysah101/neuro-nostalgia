@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface RetroWindowProps {
   title?: string;
   children: React.ReactNode;
@@ -12,7 +14,7 @@ export function RetroWindow({ title, children, className = "", icon, isLoading =
       {title && (
         <div className="flex items-center justify-between bg-[#000080] p-1">
           <div className="flex items-center gap-2">
-            {icon && <img src={icon} alt="" className="h-4 w-4" />}
+            {icon && <Image src={icon} alt="" className="h-4 w-4" />}
             <h2 className="text-sm font-bold text-yellow-300">{title}</h2>
           </div>
           <div className="flex gap-1">

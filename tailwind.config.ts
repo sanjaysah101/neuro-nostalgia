@@ -56,13 +56,13 @@ const config: Config = {
       },
       animation: {
         blink: "blink 1s step-end infinite",
-        marquee: "marquee 15s linear infinite",
+        marquee: "marquee 20s linear infinite",
         construction: "construction 2s ease-in-out infinite",
       },
       keyframes: {
         blink: {
-          "0%, 49%": { opacity: "1" },
-          "50%, 100%": { opacity: "0" },
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0" },
         },
         marquee: {
           "0%": { transform: "translateX(100%)" },

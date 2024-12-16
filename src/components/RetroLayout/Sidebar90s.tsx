@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { LayoutTheme } from "@/types/layout";
 
 interface SidebarProps {
@@ -115,7 +117,7 @@ export default function Sidebar90s({
         <div className={styles.title}>Site Stats</div>
         <div className={`${styles.content} text-center`}>
           <div className="mb-2">
-            <img src="/images/counter.gif" alt="Hit Counter" className="mr-2 inline-block" />
+            <Image src="/images/counter.gif" alt="Hit Counter" width={100} height={31} className="mr-2 inline-block" />
             <span>Visitors: 1,337</span>
           </div>
           <div className="text-xs text-gray-600">Last Updated: {new Date().toLocaleDateString()}</div>
@@ -124,8 +126,8 @@ export default function Sidebar90s({
 
       {/* Web Buttons */}
       <div className="mt-4 space-y-2 text-center">
-        <img src="/images/netscape_now.gif" alt="Netscape Now!" width="88" height="31" className="mx-auto" />
-        <img src="/images/ie_logo.gif" alt="Internet Explorer" width="88" height="31" className="mx-auto" />
+        <Image src="/images/netscape_now.gif" alt="Netscape Now!" width={88} height={31} className="mx-auto" />
+        <Image src="/images/ie_logo.gif" alt="Internet Explorer" width={88} height={31} className="mx-auto" />
       </div>
     </aside>
   );

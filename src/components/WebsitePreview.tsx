@@ -16,6 +16,9 @@ const WebsitePreview = ({
 }) => {
   // Create a default layout structure
   const defaultLayout = {
+    title: "Transformed Website",
+    meta: {},
+    style: {},
     layout: {
       header: {
         title: "Transformed Website",
@@ -142,7 +145,7 @@ const WebsitePreview = ({
         <div className="min-h-[600px] bg-[#c0c0c0] p-4">
           <RetroLayout
             data={{
-              title: parsedData?.title || "",
+              title: parsedData?.title || "Transformed Website",
               meta: parsedData?.meta || {},
               style: parsedData?.style || {},
               layout: {
@@ -180,8 +183,8 @@ const WebsitePreview = ({
 
       {/* Stats and Info */}
       <RetroWindow title="Website Analysis" className="bg-[#008080]">
-        <div className="space-y-4 bg-[#c0c0c0] p-4">
-          <table className="w-full border-2 border-[#808080] bg-white">
+        <div className="space-y-4 bg-[#c0c0c0] p-4 text-gray-900">
+          <table className="w-full border-2 border-[#808080] bg-gray-200">
             <tbody>
               <tr className="border-b border-[#808080]">
                 <td className="border-r border-[#808080] p-2 font-bold">Original Size:</td>
