@@ -92,9 +92,9 @@ const WebsitePreview = ({
           <div className="sticky top-0 z-10 bg-[#c0c0c0]">
             <div className="flex items-center justify-between p-2">
               <div className="flex items-center space-x-2">
-                <button className="h-6 w-6 rounded-full bg-[#ff0000]" title="Close" />
-                <button className="h-6 w-6 rounded-full bg-[#ffff00]" title="Minimize" />
-                <button className="h-6 w-6 rounded-full bg-[#00ff00]" title="Maximize" />
+                <button className="h-3 w-3 rounded-full bg-[#ff0000]" title="Close" />
+                <button className="h-3 w-3 rounded-full bg-[#ffff00]" title="Minimize" />
+                <button className="h-3 w-3 rounded-full bg-[#00ff00]" title="Maximize" />
               </div>
               <div className="flex items-center space-x-2">
                 <button className="rounded border border-gray-600 bg-[#c0c0c0] px-2 py-1" title="Copy URL">
@@ -106,9 +106,10 @@ const WebsitePreview = ({
               </div>
             </div>
             <div className="flex items-center space-x-2 border-t-2 border-[#ffffff] bg-[#c0c0c0] p-2">
-              <span>📍</span>
               <input type="text" value={url} readOnly className="w-full bg-[#f0f0f0] p-1 font-mono text-sm" />
-              <button className="rounded border border-gray-600 bg-[#c0c0c0] px-4 py-1">Go</button>
+              <button className="rounded border-2 border-b-[#404040] border-l-white border-r-[#404040] border-t-white bg-[#c0c0c0] px-4 py-1 text-[#000000] active:border-b-white active:border-l-[#404040] active:border-r-white active:border-t-[#404040]">
+                Go
+              </button>
             </div>
           </div>
 

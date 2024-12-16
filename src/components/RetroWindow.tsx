@@ -10,22 +10,22 @@ interface RetroWindowProps {
 
 export function RetroWindow({ title, children, className = "", icon, isLoading = false }: RetroWindowProps) {
   return (
-    <div className={`shadow-win95 border-2 border-[#808080] bg-[#c0c0c0] ${className}`}>
+    <div className={`border-2 border-[#808080] bg-[#c0c0c0] shadow-win95 ${className}`}>
       {title && (
-        <div className="flex items-center justify-between bg-[#000080] p-1">
+        <div className="flex items-center justify-between border-b-2 border-[#808080] bg-[#c0c0c0] p-1">
           <div className="flex items-center gap-2">
             {icon && <Image src={icon} alt="" className="h-4 w-4" />}
-            <h2 className="text-sm font-bold text-yellow-300">{title}</h2>
+            <h2 className="text-sm font-bold text-[#000080]">{title}</h2>
           </div>
-          <div className="flex gap-1">
-            <button className="shadow-win95 active:shadow-win95-inset h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs">
-              _
+          <div className="flex gap-[2px]">
+            <button className="h-[14px] w-[16px] border border-b-[#000000] border-l-[#ffffff] border-r-[#000000] border-t-[#ffffff] bg-[#c0c0c0] text-[10px] leading-[8px] text-black active:border-b-[#ffffff] active:border-l-[#000000] active:border-r-[#ffffff] active:border-t-[#000000] active:pl-[2px] active:pt-[2px]">
+              &#8212;
             </button>
-            <button className="shadow-win95 active:shadow-win95-inset h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs">
-              □
+            <button className="h-[14px] w-[16px] border border-b-[#000000] border-l-[#ffffff] border-r-[#000000] border-t-[#ffffff] bg-[#c0c0c0] text-[10px] leading-[8px] text-black active:border-b-[#ffffff] active:border-l-[#000000] active:border-r-[#ffffff] active:border-t-[#000000] active:pl-[2px] active:pt-[2px]">
+              &#9633;
             </button>
-            <button className="shadow-win95 active:shadow-win95-inset h-5 w-5 border-2 border-[#808080] bg-[#c0c0c0] text-xs">
-              ×
+            <button className="h-[14px] w-[16px] border border-b-[#000000] border-l-[#ffffff] border-r-[#000000] border-t-[#ffffff] bg-[#c0c0c0] text-[10px] leading-[8px] text-black active:border-b-[#ffffff] active:border-l-[#000000] active:border-r-[#ffffff] active:border-t-[#000000] active:pl-[2px] active:pt-[2px]">
+              &#10005;
             </button>
           </div>
         </div>
@@ -39,8 +39,8 @@ export function RetroWindow({ title, children, className = "", icon, isLoading =
           children
         )}
       </div>
-      <div className="flex h-6 items-center border-t-2 border-[#ffffff] bg-[#c0c0c0] px-2 text-sm">
-        <span>Ready</span>
+      <div className="flex h-6 items-center border-t-2 border-[#ffffff] bg-[#c0c0c0] px-2 text-sm text-black">
+        Ready
       </div>
     </div>
   );

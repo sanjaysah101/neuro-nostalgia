@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import { WebsiteData } from "@/app/api/parse/route";
@@ -159,21 +158,6 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
       {layoutStyle === "classic" && renderClassicLayout()}
       {layoutStyle === "frames" && renderFramesLayout()}
       {layoutStyle === "table" && renderTableLayout()}
-
-      {/* 90s Footer Elements */}
-      <div className="mt-4 space-y-2 text-center">
-        {showHitCounter && (
-          <div className="flex items-center justify-center space-x-2">
-            <Image src="/images/counter.gif" alt="Hit Counter" width={16} height={16} />
-            <span className="font-['Courier_New'] text-sm">Visitors: {hitCount}</span>
-          </div>
-        )}
-        <div className="flex justify-center space-x-4">
-          <Image src="/images/html_valid.gif" alt="Valid HTML" width={88} height={31} />
-          <Image src="/images/css_valid.gif" alt="Valid CSS" width={88} height={31} />
-          <Image src="/images/netscape_now.gif" alt="Netscape Now" width={88} height={31} />
-        </div>
-      </div>
     </div>
   );
 }
