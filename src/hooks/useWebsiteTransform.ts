@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 
+import { WebsiteData } from "../app/api/parse/route";
+
 export function useWebsiteTransform() {
-  const [transformedHtml, setTransformedHtml] = useState("");
+  const [transformedHtml, setTransformedHtml] = useState<WebsiteData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -16,6 +18,7 @@ export function useWebsiteTransform() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url }),
+        cache: "force-cache",
       });
 
       const data = await response.json();
@@ -23,6 +26,7 @@ export function useWebsiteTransform() {
       if (!response.ok) {
         throw new Error(data.error || "Failed to transform website");
       }
+
       console.log({ data });
       setTransformedHtml(data);
     } catch (err) {

@@ -105,7 +105,7 @@ export type WebsiteData = {
   };
 };
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<NextResponse> {
   try {
     const { url } = await request.json();
     const response = await fetch(url);
@@ -338,11 +338,9 @@ export async function POST(request: Request) {
       },
     };
 
-    console.log(`structuredData`, mainContent);
-
     return NextResponse.json(mainContent);
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Failed to transform website" }, { status: 500 });
+    console.error({ error });
+    return NextResponse.json({ error: `Failed to transform website ${error}` }, { status: 500 });
   }
 }

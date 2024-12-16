@@ -30,7 +30,14 @@ const themeStyles: { [key in LayoutTheme]: { sidebar: string; widget: string; ti
   // Add more themes as needed
 };
 
-export default function Sidebar90s({ navigation, categories, widgets, theme = "default" }: WebsiteData) {
+interface Sidebar90sProps {
+  navigation: WebsiteData['layout']['sidebar']['navigation'];
+  categories: WebsiteData['layout']['sidebar']['categories'];
+  widgets: WebsiteData['layout']['sidebar']['widgets'];
+  theme?: LayoutTheme;
+}
+
+export default function Sidebar90s({ navigation, categories, widgets, theme = "default" }: Sidebar90sProps) {
   const styles = themeStyles[theme];
 
   return (
