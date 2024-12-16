@@ -1,4 +1,4 @@
-export interface Layout90sProps {
+export interface WebsiteData {
   data: {
     title: string;
     meta: {
@@ -8,6 +8,8 @@ export interface Layout90sProps {
       generator: string;
       viewport: string;
       charset: string;
+      ogImage: string;
+      themeColor: string;
     };
     layout: {
       header: {
@@ -21,6 +23,15 @@ export interface Layout90sProps {
         }>;
         banner: string;
       };
+      navigation: {
+        position: 'header' | 'footer' | 'sidebar';
+        menuLinks: Array<{
+          text: string;
+          href: string;
+          isActive: boolean;
+          hasIcon: boolean;
+        }>;
+      }[];
       // ... rest of the types matching your parsed data structure
     };
   };
@@ -49,9 +60,11 @@ export interface Article {
   text: string;
   date?: string;
   author?: string;
-  category?: string;
+  category: string;
   hasComments?: boolean;
   readingTime?: string;
+  excerpt?: string;
+  isMainContent?: boolean;
 }
 
 export interface Video {

@@ -8,6 +8,7 @@ import Footer90s from "./Footer90s";
 import Header90s from "./Header90s";
 import Main90s from "./Main90s";
 import Sidebar90s from "./Sidebar90s";
+import { themeStyles } from "./themeStyles";
 
 interface RetroLayoutProps {
   data: WebsiteData;
@@ -17,32 +18,7 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
   const [currentTheme, setCurrentTheme] = useState<LayoutTheme>("default");
   const [layoutStyle, setLayoutStyle] = useState<"classic" | "frames" | "table">("classic");
 
-  const themeStyles = {
-    default: {
-      bg: "bg-[#c0c0c0]",
-      text: "text-black",
-      border: "border-win95-border",
-      window: "bg-[#ffffff] shadow-win95",
-    },
-    cyber: {
-      bg: "bg-black",
-      text: "text-green-400",
-      border: "border-green-500",
-      window: "bg-black shadow-neon-green",
-    },
-    vaporwave: {
-      bg: "bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500",
-      text: "text-white",
-      border: "border-white",
-      window: "bg-[#000000] shadow-neon-pink",
-    },
-    grunge: {
-      bg: "bg-[#2c1810]",
-      text: "text-amber-100",
-      border: "border-amber-900",
-      window: "bg-stone-900 shadow-grunge",
-    },
-  };
+  const styles = themeStyles[currentTheme];
 
   const layout = data?.layout || {
     header: {},
@@ -145,7 +121,7 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
   );
 
   return (
-    <div className={`min-h-screen ${themeStyles[currentTheme].bg} p-4`}>
+    <div className={`min-h-screen ${styles.bg} p-4`}>
       {renderLayoutSwitcher()}
 
       {layoutStyle === "classic" && renderClassicLayout()}

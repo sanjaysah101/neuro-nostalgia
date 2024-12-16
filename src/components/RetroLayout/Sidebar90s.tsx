@@ -1,4 +1,5 @@
-import { LayoutTheme } from "@/types/layout";
+import { LayoutTheme } from "../../types/layout";
+import { getSidebarStyles } from "./themeStyles";
 
 interface SidebarProps {
   navigation?: Array<{
@@ -14,46 +15,13 @@ interface SidebarProps {
   theme?: LayoutTheme;
 }
 
-const themeStyles: {
-  [key in LayoutTheme]: { sidebar: string; widget: string; title: string; content: string; link: string };
-} = {
-  default: {
-    sidebar: "w-64 bg-[#c0c0c0] p-4 border-2 border-[#808080] shadow-win95",
-    widget: "mb-4 bg-white border-2 border-[#808080] shadow-win95",
-    title: "bg-[#000080] text-white p-1 mb-2 text-center font-bold shadow-win95",
-    content: "p-2 text-sm text-black",
-    link: "text-[#000080] hover:text-[#0000ff] hover:underline",
-  },
-  cyber: {
-    sidebar: "w-64 bg-black p-4 border border-green-500",
-    widget: "mb-4 bg-black border border-green-400",
-    title: "bg-green-900 text-green-400 p-1 mb-2 text-center font-mono",
-    content: "p-2 text-sm text-green-400 font-mono",
-    link: "text-green-400 hover:text-green-300 hover:underline",
-  },
-  vaporwave: {
-    sidebar: "w-64 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 p-4 border border-white",
-    widget: "mb-4 bg-black/50 border border-white",
-    title: "bg-white text-black p-1 mb-2 text-center font-mono",
-    content: "p-2 text-sm text-white",
-    link: "text-white hover:text-pink-300 hover:underline",
-  },
-  grunge: {
-    sidebar: "w-64 bg-stone-800 p-4 border border-amber-100",
-    widget: "mb-4 bg-stone-800 border border-amber-100",
-    title: "bg-amber-100 text-stone-800 p-1 mb-2 text-center font-mono",
-    content: "p-2 text-sm text-amber-100 font-mono",
-    link: "text-amber-100 hover:text-amber-200 hover:underline",
-  },
-};
-
 export default function Sidebar90s({
   navigation = [],
   categories = [],
   widgets = [],
   theme = "default",
 }: SidebarProps) {
-  const styles = themeStyles[theme];
+  const styles = getSidebarStyles(theme);
 
   return (
     <aside className={styles.sidebar}>

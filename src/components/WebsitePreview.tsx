@@ -73,6 +73,45 @@ const WebsitePreview = ({
     setIframeLoading(false);
   };
 
+  const renderMetadata = (metadata: WebsiteData["meta"]) => (
+    <div className="mb-4 space-y-2 border-2 border-[#808080] bg-[#c0c0c0] p-4">
+      <h3 className="font-bold">Page Metadata</h3>
+      <div className="grid grid-cols-2 gap-2 text-sm">
+        {Object.entries(metadata).map(
+          ([key, value]) =>
+            value && (
+              <div key={key} className="col-span-2">
+                <span className="font-bold">{key}:</span> <span className="font-mono">{value}</span>
+              </div>
+            )
+        )}
+      </div>
+    </div>
+  );
+
+  // Add content analysis section
+  const renderContentAnalysis = (data: WebsiteData) => (
+    <div className="mt-4 space-y-2 border-2 border-[#808080] bg-[#c0c0c0] p-4">
+      <h3 className="font-bold">Content Analysis</h3>
+      <div className="grid grid-cols-2 gap-2 text-sm">
+        <div>
+          <span className="font-bold">Main Content Blocks:</span>{" "}
+          {data.layout.main.content.articles.filter((a) => a.isMainContent ?? false).length}
+        </div>
+        <div>
+          <span className="font-bold">Images:</span> {data.layout.main.content.images.length}
+        </div>
+        <div>
+          <span className="font-bold">Navigation Items:</span> {data.layout.header.mainNav.length}
+        </div>
+        <div>
+          <span className="font-bold">Layout Style:</span>{" "}
+          {data.style.layout.hasTables ? "Table-based" : data.style.layout.hasFrames ? "Frames" : "Modern"}
+        </div>
+      </div>
+    </div>
+  );
+
   if (loading) {
     return (
       <RetroWindow title="Processing..." className="mt-4">
@@ -182,53 +221,35 @@ const WebsitePreview = ({
         </div>
       </RetroWindow>
 
-      {/* Stats and Info */}
-      <RetroWindow title="Website Analysis" className="bg-[#008080]">
-        <div className="space-y-4 bg-[#c0c0c0] p-4 text-gray-900">
-          <table className="w-full border-2 border-[#808080] bg-gray-200">
-            <tbody>
-              <tr className="border-b border-[#808080]">
-                <td className="border-r border-[#808080] p-2 font-bold">Elements Found:</td>
-                <td className="p-2">
-                  {parsedData?.layout?.main?.content?.articles?.length +
-                    (parsedData?.layout?.main?.content?.images?.length || 0) +
-                    (parsedData?.layout?.main?.content?.tables?.length || 0) || 0}
-                </td>
-              </tr>
-              <tr className="border-b border-[#808080]">
-                <td className="border-r border-[#808080] p-2 font-bold">Layout Style:</td>
-                <td className="p-2">
-                  {parsedData?.style?.layout?.hasTables
-                    ? "Table-based"
-                    : parsedData?.style?.layout?.hasFrames
-                      ? "Frames"
-                      : "Classic"}
-                </td>
-              </tr>
-              <tr className="border-b border-[#808080]">
-                <td className="border-r border-[#808080] p-2 font-bold">Images Found:</td>
-                <td className="p-2">{parsedData?.layout?.main?.content?.images?.length || 0}</td>
-              </tr>
-              <tr>
-                <td className="border-r border-[#808080] p-2 font-bold">Tables Used:</td>
-                <td className="p-2">{parsedData?.layout?.main?.content?.tables?.length || 0}</td>
-              </tr>
-            </tbody>
-          </table>
+      {/* Enhanced Analysis Section */}
+      {!loading && transformedHtml && (
+        <RetroWindow title="Website Analysis" className="bg-[#008080]">
+          <div className="space-y-4 bg-[#c0c0c0] p-4 text-gray-900">
+            {typeof transformedHtml !== 'string' && transformedHtml && (
+              <>
+                {renderMetadata(transformedHtml.meta)}
+                {renderContentAnalysis(transformedHtml)}
 
-          <div className="rounded border-2 border-[#808080] bg-black p-2 font-mono text-green-400">
-            <div>Status: Transform Complete ✓</div>
-            <div>
-              Style: {parsedData?.style?.hasGradients ? "Modern" : "Classic"} |{" "}
-              {parsedData?.style?.layout?.isResponsive ? "Responsive" : "Fixed Width"}
-            </div>
-            <div>
-              Compatibility: {parsedData?.style?.layout?.hasFrames ? "Netscape 2.0+" : "All Browsers"}{" "}
-              {parsedData?.style?.hasBorders ? "| Borders" : ""}
-            </div>
+                {/* Technical Details */}
+                <div className="rounded border-2 border-[#808080] bg-black p-2 font-mono text-green-400">
+                  <div>Status: Transform Complete ✓</div>
+                  <div>
+                    Style: {transformedHtml.style.hasGradients ? "Modern" : "Classic"} |{" "}
+                    {transformedHtml.style.layout.isResponsive ? "Responsive" : "Fixed Width"}
+                  </div>
+                  <div>
+                    Compatibility: {transformedHtml.style.layout.hasFrames ? "Netscape 2.0+" : "All Browsers"}{" "}
+                    {transformedHtml.style.hasBorders ? "| Borders" : ""}
+                  </div>
+                  <div>
+                    Language: {transformedHtml.meta.language} | Last Modified: {transformedHtml.meta.lastModified || "N/A"}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-        </div>
-      </RetroWindow>
+        </RetroWindow>
+      )}
     </div>
   );
 };

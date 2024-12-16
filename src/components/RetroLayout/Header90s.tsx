@@ -2,6 +2,8 @@ import Image from "next/image";
 
 import { LayoutTheme } from "@/types/layout";
 
+import { getHeaderStyles } from "./themeStyles";
+
 interface Header90sProps {
   title?: string;
   logo?: string;
@@ -15,33 +17,6 @@ interface Header90sProps {
   theme?: LayoutTheme;
 }
 
-const themeStyles: { [key in LayoutTheme]: { header: string; logo: string; nav: string; link: string } } = {
-  default: {
-    header: "bg-win95-navy text-win95-yellow text-center p-4 border-2 border-win95-border",
-    logo: "border-2 border-white p-1 bg-win95-gray",
-    nav: "bg-win95-gray p-2 border-2 border-win95-border-darker mt-2",
-    link: "text-win95-navy font-bold mx-4 hover:text-red-600 hover:underline",
-  },
-  cyber: {
-    header: "bg-black text-green-400 text-center p-4 border border-green-500",
-    logo: "border border-green-500 p-1 bg-black",
-    nav: "bg-black p-2 border border-green-500 mt-2",
-    link: "text-green-400 font-mono mx-4 hover:text-green-200 hover:underline",
-  },
-  vaporwave: {
-    header: "bg-black/50 text-white text-center p-4 border border-white",
-    logo: "border border-white p-1 bg-black/50",
-    nav: "bg-black/50 p-2 border border-white mt-2",
-    link: "text-white font-mono mx-4 hover:text-pink-300 hover:underline",
-  },
-  grunge: {
-    header: "bg-stone-800 text-amber-100 text-center p-4 border border-amber-100",
-    logo: "border border-amber-100 p-1 bg-stone-800",
-    nav: "bg-stone-800 p-2 border border-amber-100 mt-2",
-    link: "text-amber-100 font-mono mx-4 hover:text-amber-200 hover:underline",
-  },
-};
-
 export default function Header90s({
   title = "Transformed Website",
   logo,
@@ -49,7 +24,7 @@ export default function Header90s({
   banner,
   theme = "default",
 }: Header90sProps) {
-  const styles = themeStyles[theme];
+  const styles = getHeaderStyles(theme);
 
   return (
     <header className={styles.header} role="banner">

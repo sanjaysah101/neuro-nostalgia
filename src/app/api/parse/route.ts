@@ -11,6 +11,8 @@ export type WebsiteData = {
     generator: string;
     viewport: string;
     charset: string;
+    language?: string;
+    lastModified?: string;
   };
   layout: {
     header: {
@@ -52,6 +54,7 @@ export type WebsiteData = {
           category: string;
           hasComments: boolean;
           readingTime: string;
+          isMainContent?: boolean;
         }>;
         images: Array<{
           src: string;
@@ -105,53 +108,120 @@ export type WebsiteData = {
   };
 };
 
+// Add better error handling and content sanitization
+const sanitizeContent = (content: string) => {
+  return content
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "") // Remove scripts
+    .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, "") // Remove styles
+    .replace(/on\w+="[^"]*"/g, "") // Remove inline events
+    .trim();
+};
+
 export async function POST(request: Request): Promise<NextResponse> {
   try {
     const { url } = await request.json();
-    const response = await fetch(url);
-    const html = await response.text();
 
+    // Add timeout and better error handling for fetch
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; NeuroNostalgia/1.0)",
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch URL: ${response.statusText}`);
+    }
+
+    const html = await response.text();
     const $ = cheerio.load(html);
 
-    // Define images
+    // Enhanced content extraction
+    const articles = $("article, .post, .entry, main p")
+      .map((_, el) => {
+        const $el = $(el);
+        const text = sanitizeContent($el.text());
+
+        return {
+          text,
+          date: $el.find("time, .date, .posted-on").first().text().trim(),
+          author: $el.find(".author, .byline").first().text().trim(),
+          category: $el
+            .find(".category, .cat-links")
+            .map((_, cat) => $(cat).text().trim())
+            .get(),
+          hasComments: $el.find(".comments-link, .comment-count").length > 0,
+          readingTime: $el.find(".reading-time").first().text().trim(),
+          excerpt: $el.find(".excerpt, .entry-summary").first().text().trim(),
+          isMainContent: $el.is("main p"),
+        };
+      })
+      .get()
+      .filter((article) => article.text.length > 50); // Filter out short snippets
+
+    // Enhanced image parsing with error handling
     const images = Array.from(
       new Map(
         $("img")
-          .map((_, el) => ({
-            src: $(el).attr("src"),
-            alt: $(el).attr("alt") || "",
-          }))
+          .map((_, el) => {
+            try {
+              const $el = $(el);
+              const src = $el.attr("src");
+              // Handle relative URLs
+              const fullSrc = src?.startsWith("http") ? src : new URL(src || "", url).toString();
+              return {
+                src: fullSrc,
+                alt: $el.attr("alt") || "",
+                dimensions: {
+                  width: $el.attr("width") || $el.css("width") || "auto",
+                  height: $el.attr("height") || $el.css("height") || "auto",
+                },
+                isDecorative: !$el.attr("alt"),
+                inArticle: $el.closest("article").length > 0,
+                isThumbnail: $el.hasClass("thumbnail") || $el.closest(".thumbnail").length > 0,
+              };
+            } catch (error) {
+              console.error("Error parsing image:", error);
+              return null;
+            }
+          })
           .get()
-          .filter((img) => img.src)
-          .map((img) => [img.src, img])
+          .filter(Boolean)
+          .map((img) => [img?.src, img])
       ).values()
     );
 
-    // Define articles
-    const articles = Array.from(
-      new Set(
-        $("article")
-          .map((_, el) => $(el).text().trim())
-          .get()
-      )
-    );
-
-    // Define navMenus first
-    const navMenus = $("nav")
+    // Enhanced navigation parsing
+    const navMenus = $("nav, .menu, .navigation")
       .map((_, el) => ({
         menuLinks: Array.from(
           new Map(
             $(el)
               .find("a")
-              .map((_, navEl) => ({
-                text: $(navEl).text().trim(),
-                href: $(navEl).attr("href"),
-              }))
+              .map((_, navEl) => {
+                const $navEl = $(navEl);
+                const href = $navEl.attr("href");
+                // Skip empty or javascript: links
+                if (!href || href.startsWith("javascript:") || href === "#") return null;
+
+                return {
+                  text: $navEl.text().trim(),
+                  href: href.startsWith("http") ? href : new URL(href, url).toString(),
+                  isActive: $navEl.hasClass("active") || $navEl.hasClass("current"),
+                  hasIcon: $navEl.find("img, i, svg, .icon").length > 0,
+                };
+              })
               .get()
-              .filter((link): link is { text: string; href: string } => Boolean(link.href))
-              .map((link) => [link.href, link])
+              .filter(Boolean)
+              .map((link) => [link?.href, link])
           ).values()
         ),
+        position: $(el).closest("header").length ? "header" : $(el).closest("footer").length ? "footer" : "sidebar",
       }))
       .get();
 
@@ -169,17 +239,28 @@ export async function POST(request: Request): Promise<NextResponse> {
       ).values()
     );
 
+    // Enhanced metadata extraction
+    const metadata = {
+      description:
+        $('meta[name="description"]').attr("content") || $('meta[property="og:description"]').attr("content") || "",
+      keywords: $('meta[name="keywords"]').attr("content") || "",
+      author: $('meta[name="author"]').attr("content") || $('meta[property="article:author"]').attr("content") || "",
+      generator: $('meta[name="generator"]').attr("content") || "",
+      viewport: $('meta[name="viewport"]').attr("content") || "",
+      charset:
+        $("meta[charset]").attr("charset") ||
+        $('meta[http-equiv="Content-Type"]')
+          .attr("content")
+          ?.match(/charset=([^;]+)/)?.[1] ||
+        "UTF-8",
+      lastModified: $('meta[http-equiv="last-modified"]').attr("content") || "",
+      language: $("html").attr("lang") || "en",
+    };
+
     // Extract structured data with unique entries
     const mainContent: WebsiteData = {
       title: $("head > title, .site-title").text().trim(),
-      meta: {
-        description: $('meta[name="description"]').attr("content") || "",
-        keywords: $('meta[name="keywords"]').attr("content") || "",
-        author: $('meta[name="author"]').attr("content") || "",
-        generator: $('meta[name="generator"]').attr("content") || "",
-        viewport: $('meta[name="viewport"]').attr("content") || "",
-        charset: $("meta[charset]").attr("charset") || "UTF-8",
-      },
+      meta: metadata,
       layout: {
         header: {
           title: $("h1, .site-title, #site-title").first().text().trim() || $("head > title").text().trim(),
@@ -252,15 +333,16 @@ export async function POST(request: Request): Promise<NextResponse> {
           },
           content: {
             articles: articles.map((article) => ({
-              text: article,
+              text: article.text,
               date: $("article time, .entry-date, .posted-on").first().attr("datetime") || "",
               author: $("article .author, .entry-author, .byline").first().text().trim() || "",
               category: $("article .category, .entry-category, .post-categories").first().text().trim() || "",
               hasComments: $("article .comments, .comment-count, .comments-link").length > 0,
               readingTime: $("article .reading-time, .rt-time").first().text().trim() || "",
+              isMainContent: article.isMainContent,
             })),
             images: images
-              .filter((img): img is { src: string; alt: string } => Boolean(img.src))
+              .filter((img): img is typeof img => Boolean(img?.src))
               .map((img) => ({
                 ...img,
                 dimensions: {
@@ -278,8 +360,8 @@ export async function POST(request: Request): Promise<NextResponse> {
                   .find("th")
                   .map((_, th) => $(th).text().trim())
                   .get(),
-                rows: Array.from($(el).find("tr:has(td)")).map(tr => 
-                  Array.from($(tr).find("td")).map(td => $(td).text().trim())
+                rows: Array.from($(el).find("tr:has(td)")).map((tr) =>
+                  Array.from($(tr).find("td")).map((td) => $(td).text().trim())
                 ),
                 hasBorder: $(el).attr("border") !== undefined,
               }))
@@ -342,7 +424,13 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     return NextResponse.json(mainContent);
   } catch (error) {
-    console.error({ error });
-    return NextResponse.json({ error: `Failed to transform website ${error}` }, { status: 500 });
+    console.error("Parse error:", error);
+    return NextResponse.json(
+      {
+        error: `Failed to transform website: ${error instanceof Error ? error.message : "Unknown error"}`,
+        details: error instanceof Error ? error.stack : undefined,
+      },
+      { status: 500 }
+    );
   }
 }

@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { LayoutTheme } from "@/types/layout";
 
+import { getMainStyles } from "./themeStyles";
 import { Article, Image as ImageType, Table, Video } from "./types";
 
 interface MainProps {
@@ -19,35 +20,20 @@ interface MainProps {
   theme?: LayoutTheme;
 }
 
-const themeStyles: { [key in LayoutTheme]: { main: string; article: string; heading: string; image: string } } = {
-  default: {
-    main: "flex-1 bg-white border-2 border-[#808080] min-h-[500px] shadow-win95-inset",
-    article: "mb-6 border-2 border-[#808080] p-4 bg-[#c0c0c0] shadow-win95",
-    heading: "bg-[#000080] text-white font-bold mb-2 p-1 shadow-win95",
-    image: "border-2 border-[#808080] p-1 my-2 shadow-win95 bg-[#c0c0c0]",
-  },
-  cyber: {
-    main: "flex-1 bg-black p-4 border border-green-500 min-h-[500px]",
-    article: "mb-6 border border-green-500 p-4",
-    heading: "text-green-400 font-mono mb-2 border border-green-500 p-1",
-    image: "border border-green-500 p-1 my-2",
-  },
-  vaporwave: {
-    main: "flex-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 p-4 border border-white min-h-[500px]",
-    article: "mb-6 border border-white p-4 bg-black/50",
-    heading: "text-white font-mono mb-2 border border-white p-1 bg-black/50",
-    image: "border border-white p-1 my-2 bg-black/50",
-  },
-  grunge: {
-    main: "flex-1 bg-stone-800 p-4 border border-amber-100 min-h-[500px]",
-    article: "mb-6 border border-amber-100 p-4",
-    heading: "text-amber-100 font-mono mb-2 border border-amber-100 p-1",
-    image: "border border-amber-100 p-1 my-2",
-  },
+const validateTheme = (theme: string): LayoutTheme => {
+  const validThemes: LayoutTheme[] = ["default", "cyber", "vaporwave", "grunge", "classic", "frames", "tables"];
+  return validThemes.includes(theme as LayoutTheme) ? (theme as LayoutTheme) : "default";
+};
+
+const getImageDimension = (dimension: string | undefined, defaultValue: string) => {
+  if (!dimension) return parseInt(defaultValue, 10);
+  const parsed = parseInt(dimension, 10);
+  return isNaN(parsed) ? parseInt(defaultValue, 10) : parsed;
 };
 
 export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content = {}, theme = "default" }: MainProps) {
-  const styles = themeStyles[theme];
+  const validTheme = validateTheme(theme);
+  const styles = getMainStyles(validTheme);
   const { images = [] } = content;
 
   return (
@@ -59,8 +45,8 @@ export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content
             src={images[0].src}
             alt={images[0].alt || "Site Logo"}
             className="mx-auto"
-            width={parseInt(images[0].dimensions?.width || "500", 10)}
-            height={parseInt(images[0].dimensions?.height || "200", 10)}
+            width={getImageDimension(images[0].dimensions?.width, "500")}
+            height={getImageDimension(images[0].dimensions?.height, "200")}
           />
         </div>
       )}
@@ -71,7 +57,7 @@ export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content
           <h1 className={`${styles.heading} animate-blink text-xl`}>{h1}</h1>
           {index === 0 && (
             <div className={`${styles.article} mt-2`}>
-              <p className="text-center">
+              <div className="text-center">
                 🚀 Welcome to our retro-styled website! 🚀
                 <br />
                 <div className="my-2 overflow-hidden whitespace-nowrap">
@@ -79,7 +65,7 @@ export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content
                     {h1} | Best viewed in Netscape Navigator 4.0 | Resolution: 800x600
                   </div>
                 </div>
-              </p>
+              </div>
             </div>
           )}
         </div>
@@ -92,8 +78,8 @@ export default function Main90s({ headings = { h1: [], h2: [], h3: [] }, content
             src={image.src}
             alt={image.alt || `Image ${index + 2}`}
             className="mx-auto"
-            width={parseInt(image.dimensions?.width || "500", 10)}
-            height={parseInt(image.dimensions?.height || "300", 10)}
+            width={getImageDimension(image.dimensions?.width, "500")}
+            height={getImageDimension(image.dimensions?.height, "300")}
           />
           {image.alt && <div className="mt-1 text-sm text-gray-600">{image.alt}</div>}
         </div>
