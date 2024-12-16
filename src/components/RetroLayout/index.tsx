@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { WebsiteData } from "@/app/api/parse/route";
 import { LayoutTheme } from "@/types/layout";
@@ -16,8 +16,6 @@ interface RetroLayoutProps {
 export default function RetroLayout({ data }: RetroLayoutProps) {
   const [currentTheme, setCurrentTheme] = useState<LayoutTheme>("default");
   const [layoutStyle, setLayoutStyle] = useState<"classic" | "frames" | "table">("classic");
-  const [showHitCounter, setShowHitCounter] = useState(true);
-  const hitCount = Math.floor(Math.random() * 10000);
 
   const themeStyles = {
     default: {
@@ -145,11 +143,6 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
       </tbody>
     </table>
   );
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowHitCounter(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <div className={`min-h-screen ${themeStyles[currentTheme].bg} p-4`}>
