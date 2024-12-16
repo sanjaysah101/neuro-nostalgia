@@ -11,7 +11,7 @@ import { useWebsiteTransform } from "@/hooks/useWebsiteTransform";
 import WebsitePreview from "../components/WebsitePreview";
 
 export default function Home() {
-  const [url, setUrl] = useState("https://webdevnerds.com");
+  const [url, setUrl] = useState("https://wikipedia.org");
   const { transform, loading, error, transformedHtml } = useWebsiteTransform();
   const [showPreview, setShowPreview] = useState(false);
 

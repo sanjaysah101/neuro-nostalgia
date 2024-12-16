@@ -95,7 +95,7 @@ export default function RetroLayout({ data }: RetroLayoutProps) {
   );
 
   const renderClassicLayout = () => (
-    <div className="mx-auto max-w-6xl space-y-4 px-4">
+    <div className="mx-auto space-y-4 px-4">
       <Header90s {...layout.header} theme={currentTheme} />
       <div className="flex gap-4">
         <Sidebar90s {...layout.sidebar} navigation={sidebarNavigation} theme={currentTheme} />

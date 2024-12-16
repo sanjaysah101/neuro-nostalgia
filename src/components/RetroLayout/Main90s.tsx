@@ -21,7 +21,7 @@ interface MainProps {
 
 const themeStyles: { [key in LayoutTheme]: { main: string; article: string; heading: string; image: string } } = {
   default: {
-    main: "flex-1 bg-white p-4 border-2 border-[#808080] min-h-[500px] shadow-win95-inset",
+    main: "flex-1 bg-white border-2 border-[#808080] min-h-[500px] shadow-win95-inset",
     article: "mb-6 border-2 border-[#808080] p-4 bg-[#c0c0c0] shadow-win95",
     heading: "bg-[#000080] text-white font-bold mb-2 p-1 shadow-win95",
     image: "border-2 border-[#808080] p-1 my-2 shadow-win95 bg-[#c0c0c0]",
