@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { WebsiteData } from "../app/api/parse/route";
 import { LoadingAnimation } from "./LoadingAnimation";
 import RetroLayout from "./RetroLayout";
@@ -59,20 +57,6 @@ const WebsitePreview = ({
     parsedData = defaultLayout;
   }
 
-  // Add state for iframe loading
-  const [iframeLoading, setIframeLoading] = useState(true);
-  const [iframeError, setIframeError] = useState(false);
-
-  // Handle iframe events
-  const handleIframeLoad = () => {
-    setIframeLoading(false);
-  };
-
-  const handleIframeError = () => {
-    setIframeError(true);
-    setIframeLoading(false);
-  };
-
   const renderMetadata = (metadata: WebsiteData["meta"]) => (
     <div className="mb-4 space-y-2 border-2 border-[#808080] bg-[#c0c0c0] p-4">
       <h3 className="font-bold">Page Metadata</h3>
@@ -124,64 +108,8 @@ const WebsitePreview = ({
 
   return (
     <div className="mt-8 space-y-4">
-      {/* Original Website Preview */}
-      <RetroWindow title={`Original Website - ${url}`} className="bg-[#c0c0c0]">
-        <div className="h-[600px] overflow-hidden bg-white">
-          {/* Browser Chrome */}
-          <div className="sticky top-0 z-10 bg-[#c0c0c0]">
-            <div className="flex items-center justify-between p-2">
-              <div className="flex items-center space-x-2">
-                <button className="h-3 w-3 rounded-full bg-[#ff0000]" title="Close" />
-                <button className="h-3 w-3 rounded-full bg-[#ffff00]" title="Minimize" />
-                <button className="h-3 w-3 rounded-full bg-[#00ff00]" title="Maximize" />
-              </div>
-              <div className="flex items-center space-x-2">
-                <button className="rounded border border-gray-600 bg-[#c0c0c0] px-2 py-1" title="Copy URL">
-                  📋
-                </button>
-                <button className="rounded border border-gray-600 bg-[#c0c0c0] px-2 py-1" title="Refresh">
-                  🔄
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2 border-t-2 border-[#ffffff] bg-[#c0c0c0] p-2">
-              <input type="text" value={url} readOnly className="w-full bg-[#f0f0f0] p-1 font-mono text-sm" />
-              <button className="rounded border-2 border-b-[#404040] border-l-white border-r-[#404040] border-t-white bg-[#c0c0c0] px-4 py-1 text-[#000000] active:border-b-white active:border-l-[#404040] active:border-r-white active:border-t-[#404040]">
-                Go
-              </button>
-            </div>
-          </div>
-
-          {/* Website Content */}
-          <div className="relative h-[500px] border-2 border-[#808080] bg-white p-4">
-            {iframeLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-[#c0c0c0]">
-                <LoadingAnimation />
-              </div>
-            )}
-            {iframeError ? (
-              <div className="flex h-full items-center justify-center">
-                <div className="text-center">
-                  <div className="mb-2 text-xl">⚠️ Unable to load website</div>
-                  <div className="text-sm text-gray-600">Try refreshing or check the URL</div>
-                </div>
-              </div>
-            ) : (
-              <iframe
-                src={url}
-                className="h-full w-full border-0"
-                onLoad={handleIframeLoad}
-                onError={handleIframeError}
-                sandbox="allow-same-origin allow-scripts"
-                title="Original Website Preview"
-              />
-            )}
-          </div>
-        </div>
-      </RetroWindow>
-
       {/* 90s Transformed Version */}
-      <RetroWindow title="90s Transformed Version" className="bg-[#000080]">
+      <RetroWindow title="90s Transformed Version" className="bg-[#000080]" url={url}>
         <div className="min-h-[600px] bg-[#c0c0c0] p-4">
           <RetroLayout
             data={{
@@ -225,7 +153,7 @@ const WebsitePreview = ({
       {!loading && transformedHtml && (
         <RetroWindow title="Website Analysis" className="bg-[#008080]">
           <div className="space-y-4 bg-[#c0c0c0] p-4 text-gray-900">
-            {typeof transformedHtml !== 'string' && transformedHtml && (
+            {typeof transformedHtml !== "string" && transformedHtml && (
               <>
                 {renderMetadata(transformedHtml.meta)}
                 {renderContentAnalysis(transformedHtml)}
@@ -242,7 +170,8 @@ const WebsitePreview = ({
                     {transformedHtml.style.hasBorders ? "| Borders" : ""}
                   </div>
                   <div>
-                    Language: {transformedHtml.meta.language} | Last Modified: {transformedHtml.meta.lastModified || "N/A"}
+                    Language: {transformedHtml.meta.language} | Last Modified:{" "}
+                    {transformedHtml.meta.lastModified || "N/A"}
                   </div>
                 </div>
               </>

@@ -3,24 +3,27 @@
 import { useEffect, useState } from "react";
 
 import { BackToTop } from "@/components/BackToTop";
+import { DynamicLayout } from "@/components/DynamicLayout";
 import { LoadingAnimation } from "@/components/LoadingAnimation";
-import { RetroButton } from "@/components/RetroButton";
 import { RetroWindow } from "@/components/RetroWindow";
-import { useWebsiteTransform } from "@/hooks/useWebsiteTransform";
 
+import OriginalWebsitePreview from "../components/OriginalWebsitePreview";
+import { RetroButton } from "../components/RetroButton";
 import WebsitePreview from "../components/WebsitePreview";
+import { useWebsiteTransform } from "../hooks/useWebsiteTransform";
 
 export default function Home() {
   const [url, setUrl] = useState("https://wikipedia.org");
   const { transform, loading, error, transformedHtml } = useWebsiteTransform();
   const [showPreview, setShowPreview] = useState(false);
-
-  console.log({ transformedHtml });
+  const [dynamicLayout, setDynamicLayout] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await transform(url);
     setShowPreview(true);
+
+    if (dynamicLayout) return;
+    await transform(url);
   };
 
   // Format the date on client side only
@@ -132,6 +135,9 @@ export default function Home() {
                   <RetroButton type="submit" disabled={loading}>
                     {loading ? "Processing..." : "Transform to 90s Style!"}
                   </RetroButton>
+                  <RetroButton onClick={() => setDynamicLayout((prev) => !prev)}>
+                    {dynamicLayout ? "Static Layout" : "Dynamic Layout"}
+                  </RetroButton>
                 </div>
                 {error && <div className="mt-4 rounded border border-red-500 bg-red-100 p-2 text-red-700">{error}</div>}
               </form>
@@ -158,8 +164,16 @@ export default function Home() {
           </div>
         </RetroWindow>
 
+        {showPreview ? <OriginalWebsitePreview url={url} /> : null}
+
         {/* Preview Section */}
-        {showPreview && <WebsitePreview url={url} transformedHtml={transformedHtml} loading={loading} />}
+        {showPreview ? (
+          dynamicLayout ? (
+            <DynamicLayout url={url} />
+          ) : (
+            <WebsitePreview url={url} transformedHtml={transformedHtml} loading={loading} />
+          )
+        ) : null}
 
         {/* Footer */}
         <footer className="mt-4 text-center">
